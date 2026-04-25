@@ -56,3 +56,19 @@ def build_edges(df):
         edges.append((row.start, row.end, row.weight))
 
     return sorted(edges)
+def merge_cluster_info(locs, clusters, stid_to_name):
+
+    # 1. build station id + cluster table
+    cdf = pd.DataFrame({
+        'stid': range(len(clusters)),
+        'cluster': clusters
+    })
+
+    # 2. map id → name
+    cdf['name'] = [stid_to_name[i] for i in cdf['stid']]
+
+    # 3. merge with location data
+    merged = locs.merge(cdf, on='name')
+
+    # 4. drop extra column
+    return merged.drop(columns=['stid'])
