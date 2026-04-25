@@ -29,3 +29,10 @@ def hist_dow(df):
     result.columns = ['dow', 'count']
     
     return result
+
+
+def calc_interarrival_times(series):
+    sorted_series = series.sort_values()
+    diffs = sorted_series.diff()
+    minutes = diffs.dt.total_seconds() / 60
+    return minutes.dropna().to_numpy()
