@@ -1,0 +1,12 @@
+def geo_filter(df, a, b):
+    min_lng, min_lat = a
+    max_lng, max_lat = b
+
+    mask = (
+        df['start_lng'].between(min_lng, max_lng) &
+        df['start_lat'].between(min_lat, max_lat) &
+        df['end_lng'].between(min_lng, max_lng) &
+        df['end_lat'].between(min_lat, max_lat)
+    )
+
+    return df[mask].copy()
