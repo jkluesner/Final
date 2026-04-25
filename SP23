@@ -10,3 +10,22 @@ def geo_filter(df, a, b):
     )
 
     return df[mask].copy()
+
+
+
+def hist_dow(df):
+    day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday',
+                 'Friday', 'Saturday', 'Sunday']
+    
+    dow_numbers = df['started_at'].dt.day_of_week
+    
+    dow_names = []
+    for x in dow_numbers:
+        dow_names.append(day_names[x])
+    
+    counts = pd.Series(dow_names).value_counts()
+    
+    result = counts.reset_index()
+    result.columns = ['dow', 'count']
+    
+    return result
