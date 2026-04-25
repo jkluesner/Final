@@ -36,3 +36,23 @@ def calc_interarrival_times(series):
     diffs = sorted_series.diff()
     minutes = diffs.dt.total_seconds() / 60
     return minutes.dropna().to_numpy()
+def build_edges(df):
+    # total outgoing trips per start
+    outgoing = df.groupby('start')['count'].sum().reset_index()
+    outgoing = outgoing.rename(columns={'count': 'outgoing'})
+
+    # merge back
+    df = df.merge(outgoing, on='start')
+
+    # compute weights
+    df['weight'] = df['count'] / df['outgoing']
+
+    # keep only needed columns
+    df = df[['start', 'end', 'weight']]
+
+    # convert to list of tuples
+    edges = []
+    for row in df.itertuples(index=False):
+        edges.append((row.start, row.end, row.weight))
+
+    return sorted(edges)
