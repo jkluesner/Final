@@ -1,0 +1,23 @@
+import numpy as np
+
+def shift_svg(sampled_points: list) -> np.ndarray:
+    # Find min x and y manually
+    x_min = min(point[0] for point in sampled_points)
+    y_min = min(point[1] for point in sampled_points)
+
+    shifted = []
+
+    # Shift each point
+    for x, y in sampled_points:
+        shifted.append((x - x_min, y - y_min))
+
+    return np.array(shifted)
+
+
+def shift_svg(sampled_points:list) -> np.ndarray: 
+    ### BEGIN SOLUTION
+    # Shift to (0, 0)
+    sampled_points = np.array(sampled_points)
+    sampled_points -= sampled_points.min(axis=0)
+    return sampled_points
+    ### END SOLUTION
